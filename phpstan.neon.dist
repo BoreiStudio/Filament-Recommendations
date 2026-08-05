@@ -1,0 +1,13 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - src
+
+    level: 6
+
+    ignoreErrors:
+        - '#^Trait BoreiStudio\\FilamentRecommendations\\Traits\\HasRecommendations is used zero times and is not analysed\.$#'
+        - '#^Trait BoreiStudio\\FilamentRecommendations\\Resources\\Concerns\\HasRecommendationsWidget is used zero times and is not analysed\.$#'
+        - '#Property BoreiStudio\\FilamentRecommendations\\Widgets\\RecommendationsWidget::\$view \(view-string\) does not accept default value of type string\.$#'

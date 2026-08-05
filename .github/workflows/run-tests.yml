@@ -1,0 +1,78 @@
+name: run-tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: ['8.3', '8.4']
+        laravel: ['^12.0', '^13.0']
+        tenancy: [single, multi]
+        include:
+          - laravel: '^12.0'
+            testbench: '^10.0'
+          - laravel: '^13.0'
+            testbench: '^11.0'
+
+    name: PHP ${{ matrix.php }} | Laravel ${{ matrix.laravel }} | ${{ matrix.tenancy }}-tenant
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+          coverage: none
+
+      - name: Install dependencies
+        run: |
+          composer update "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-progress --prefer-dist
+
+      - name: Execute tests
+        env:
+          RECOMMENDATIONS_TENANCY: ${{ matrix.tenancy }}
+        run: vendor/bin/pest
+
+  pint:
+    runs-on: ubuntu-latest
+    name: Pint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --no-interaction --no-progress --prefer-dist
+
+      - name: Run Pint
+        run: vendor/bin/pint --test
+
+  phpstan:
+    runs-on: ubuntu-latest
+    name: PHPStan
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --no-interaction --no-progress --prefer-dist
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --no-progress

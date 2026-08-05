@@ -1,0 +1,12 @@
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .fi-recommendations-widget-list {
+        @apply divide-y divide-gray-100 dark:divide-gray-800;
+    }
+
+    .fi-recommendations-widget-item {
+        @apply py-2;
+    }
+}

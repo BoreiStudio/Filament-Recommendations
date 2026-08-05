@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('recommendation_settings', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('tenant_id', 191)->nullable();
+            $table->string('model', 191)->index();
+            $table->string('strategy', 191)->nullable();
+            $table->unsignedInteger('limit')->nullable();
+
+            $table->timestamps();
+
+            $table->unique(['tenant_id', 'model'], 'rec_settings_unique');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('recommendation_settings');
+    }
+};

@@ -1,0 +1,66 @@
+{
+    "name": "boreistudio/filament-recommendations",
+    "type": "library",
+    "description": "Recommendation engine plugin for Filament v5 — co-occurrence and content-based strategies with first-class multi-tenancy support",
+    "keywords": ["filament", "recommendations", "laravel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Borei Studio"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/boreistudio/filament-recommendations/issues",
+        "source": "https://github.com/boreistudio/filament-recommendations"
+    },
+    "require": {
+        "php": ">=8.3",
+        "filament/filament": "^5.0",
+        "illuminate/contracts": "^12.0|^13.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "suggest": {
+        "rubix/ml": "Optional machine-learning library for a more sophisticated collaborative filtering implementation."
+    },
+    "require-dev": {
+        "laravel/framework": "^12.0|^13.0",
+        "orchestra/testbench": "^10.0|^11.0",
+        "laravel/pint": "^1.0",
+        "larastan/larastan": "^3.0",
+        "pestphp/pest": "^4.7",
+        "mockery/mockery": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "BoreiStudio\\FilamentRecommendations\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BoreiStudio\\FilamentRecommendations\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BoreiStudio\\FilamentRecommendations\\RecommendationServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php -r \"! defined('ARTISAN_BINARY') && define('ARTISAN_BINARY', 'artisan'); chdir(dirname(__DIR__, 3)); ! is_file('artisan') || passthru('php artisan filament:assets --ansi 2>&1 || true');\""
+        ],
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint",
+        "analyse": "vendor/bin/phpstan analyse"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
