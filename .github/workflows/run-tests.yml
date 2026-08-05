@@ -23,7 +23,7 @@ jobs:
     name: PHP ${{ matrix.php }} | Laravel ${{ matrix.laravel }} | ${{ matrix.tenancy }}-tenant
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer update "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-progress --prefer-dist
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-progress --prefer-dist
 
       - name: Execute tests
         env:
@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Pint
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     name: PHPStan
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
