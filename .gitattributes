@@ -5,4 +5,6 @@
 /phpunit.xml.dist export-ignore
 /pint.json export-ignore
 /phpstan.neon.dist export-ignore
+/package.json export-ignore
+/tailwind.config.js export-ignore
 /PLAN.md export-ignore
