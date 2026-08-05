@@ -104,18 +104,32 @@ class RecommendationService
      */
     protected function recommendationIds(Model $subject): array
     {
-        return Recommendation::query()
+        $pairs = [];
+
+        foreach (Recommendation::query()
             ->where('source_type', $subject->getMorphClass())
             ->where('source_id', $subject->getKey())
             ->orderByDesc('score')
-            ->get()
-            ->map(fn (Recommendation $recommendation) => [
-                $recommendation->recommended_type,
+            ->get() as $recommendation) {
+            $pairs[] = [
+                (string) $recommendation->recommended_type,
                 $recommendation->recommended_id,
-            ])
-            ->unique(fn (array $pair) => implode(':', $pair))
-            ->values()
-            ->all();
+            ];
+        }
+
+        $seen = [];
+
+        return collect($pairs)->filter(function (array $pair) use (&$seen): bool {
+            $key = $pair[0].':'.$pair[1];
+
+            if (isset($seen[$key])) {
+                return false;
+            }
+
+            $seen[$key] = true;
+
+            return true;
+        })->values()->all();
     }
 
     /**

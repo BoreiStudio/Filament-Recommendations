@@ -66,16 +66,28 @@ trait HasRecommendations
      */
     protected function recommendationIds(): array
     {
-        return $this->recommendations()
-            ->orderByDesc('score')
-            ->get()
-            ->map(fn (Recommendation $recommendation) => [
-                $recommendation->recommended_type,
+        $pairs = [];
+
+        foreach ($this->recommendations()->orderByDesc('score')->get() as $recommendation) {
+            $pairs[] = [
+                (string) $recommendation->recommended_type,
                 $recommendation->recommended_id,
-            ])
-            ->unique(fn (array $pair) => implode(':', $pair))
-            ->values()
-            ->all();
+            ];
+        }
+
+        $seen = [];
+
+        return collect($pairs)->filter(function (array $pair) use (&$seen): bool {
+            $key = $pair[0].':'.$pair[1];
+
+            if (isset($seen[$key])) {
+                return false;
+            }
+
+            $seen[$key] = true;
+
+            return true;
+        })->values()->all();
     }
 
     /**

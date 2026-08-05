@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `RecommendationService::resolveTenantId()` no longer throws `TenantResolverNotConfigured` when no custom resolver is bound in multi-tenant mode; it safely returns `null`.
 - `ContentBasedStrategy` accepts any Eloquent model (via `FeatureProvider`) instead of requiring `Recommendable`.
+- PHPStan/Larastan: `Recommendation` and `RecommendationEvent` now declare their column `@property` types, and `recommendationIds()` uses an explicit loop instead of `Collection::map()->unique()` (which failed type inference on some Larastan versions).
 - In-panel **Documentation page** (`docs/*/index.md` modules) with a sidebar, markdown rendering and copy-to-clipboard, toggled via `RecommendationsPlugin::make()->documentation(true|false)`.
 - **Configuration cluster** — the settings page and documentation are grouped under a single `Recommendations` cluster (`RecommendationsConfigCluster`), matching the pattern of the other Borei Studio plugins.
 - **Own compiled CSS** (`resources/dist/filament-recommendations.css`) registered through `FilamentAsset`, plus `tailwind.config.js` and `package.json` build scripts.
